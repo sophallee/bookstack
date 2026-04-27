@@ -1,0 +1,7 @@
+bookstack.properties
+bookstack.conf
+.env
+vendor/
+node_modules/
+public/storage
+storage/*.key

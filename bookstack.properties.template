@@ -1,0 +1,19 @@
+# BookStack Configuration Properties
+# Copy this file to bookstack.properties and fill in your values.
+
+# Installation Path (Standard path is /var/www/bookstack)
+install_dir=/var/www/bookstack
+
+# Database Configuration
+db_name=bookstack
+db_user=bookstack
+db_pass=some_secure_password
+db_host=localhost
+
+# Application Configuration
+# This should be the full URL (e.g., https://bookstack.example.com)
+app_url=https://bookstack.example.com
+
+# Web Server Configuration (AlmaLinux default is nginx)
+web_user=apache
+web_group=apache
