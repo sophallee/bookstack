@@ -180,12 +180,25 @@ echo "--- 12. Configuring Nginx Site ---"
 # Extract domain from app_url for server_name
 domain_name=$(echo "$app_url" | sed -e 's|^[^/]*//||' -e 's|/.*$||')
 
+echo "Creating sites-available and sites-enabled directories..."
+mkdir -p /etc/nginx/sites-available /etc/nginx/sites-enabled
+
+# Add include directive to nginx.conf if not already present
+nginx_conf="/etc/nginx/nginx.conf"
+if ! grep -q "sites-enabled" "$nginx_conf"; then
+    echo "Adding sites-enabled include to $nginx_conf..."
+    sed -i '/include \/etc\/nginx\/conf\.d\/\*\.conf;/a\    include /etc/nginx/sites-enabled/*.conf;' "$nginx_conf"
+fi
+
 echo "Deploying Nginx configuration for $domain_name..."
-cp "$current_dir/bookstack.conf.template" "/etc/nginx/conf.d/bookstack.conf"
+cp "$current_dir/bookstack.conf.template" "/etc/nginx/sites-available/bookstack.conf"
 
 # Update server_name and root path in the deployed config
-sed -i "s#server_name bookstack.example.com;#server_name $domain_name;#g" "/etc/nginx/conf.d/bookstack.conf"
-sed -i "s#root /var/www/bookstack/public;#root $install_dir/public;#g" "/etc/nginx/conf.d/bookstack.conf"
+sed -i "s#server_name bookstack.example.com;#server_name $domain_name;#g" "/etc/nginx/sites-available/bookstack.conf"
+sed -i "s#root /var/www/bookstack/public;#root $install_dir/public;#g" "/etc/nginx/sites-available/bookstack.conf"
+
+echo "Enabling site..."
+ln -sf /etc/nginx/sites-available/bookstack.conf /etc/nginx/sites-enabled/bookstack.conf
 
 echo "Checking Nginx configuration..."
 nginx -t

@@ -1,6 +1,6 @@
 server {
-    listen 80;
-    server_name bookstack.example.com
+    listen 8181;
+    server_name bookstack.example.com;
     return 301 https://$host$request_uri;
 }
 
@@ -10,8 +10,8 @@ server {
     root /var/www/bookstack/public;
 
     # Default AlmaLinux Self-Signed Certificates
-    ssl_certificate /etc/pki/tls/certs/localhost.crt;
-    ssl_certificate_key /etc/pki/tls/private/localhost.key;
+    ssl_certificate /etc/pki/tls/certs/bookstack.crt;
+    ssl_certificate_key /etc/pki/tls/private/bookstack.key;
 
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_ciphers HIGH:!aNULL:!MD5;
